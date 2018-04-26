@@ -1,4 +1,35 @@
-# go-sen
-  1. 使用golang开发的敏感词处理过滤程序
-# 介绍
-  2. go敏感词处理代码（使用正则匹配），需要自己设置token1.ini文件，在源代码中设置调用路径即可，最终的效果就是token1.ini里面的关键词都被过滤为“*”，可以过滤汉字，也可以 过滤字母数字
+# gosen介绍
+  go敏感词处理代码（使用正则匹配），将字符串中的敏感词替换为自定义的token，可以过滤任意字符
+## 使用方法
+  - 可以参照token_test.go
+
+  - 1. 执行 go get github.com/bugfan/gosen
+  - 2. 使用o:=gosen.New("*") 新建一个对象，传入替换的token
+  - 3. o.Tokens=xxx 设置需要过滤的token数组
+  - 4. o.Fit=true/false 设置是否根据敏感词的个数返回对应个数的token
+  - 5. o.Screening(string) 调用此函数过滤字符串并返回替换后的结果
+  
+## 案例
+```
+package gosen
+import(
+	"testing"	
+	"log"
+)
+func TestSen(t *testing.T) {
+	
+	log.Println("-----测试-----")
+	obj:=New("*")																// new一个对象(传入过滤之后的token)
+	obj.Fit=false																// 是否适配个数
+	obj.Tokens=[]string{"共产党","射精","阴茎","茎","阴道","VX","威信","裸","逼"}	// 设置敏感词库 
+	log.Println(obj.Screening(`微信, 射精 asd9u按实际 !2VX`))					  // 过滤
+	
+}
+```
+
+```
+2018/04/26 16:51:37 -----测试-----
+2018/04/26 16:51:37 微信, * asd9u按实际 !2* <nil>
+PASS
+ok      gosen   0.013s
+```
