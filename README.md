@@ -1,11 +1,11 @@
-# gosen介绍
+# gosen
   go敏感词处理代码（使用正则匹配），将字符串中的敏感词替换为自定义的token，可以过滤任意字符
 ## 使用方法
   - 可以参照token_test.go
 
   - 1. 执行 go get github.com/bugfan/gosen
   - 2. 使用o:=gosen.New("*") 新建一个对象，传入替换的token
-  - 3. o.Tokens=xxx 设置需要过滤的token数组
+  - 3. o.Tokens=xxx 设置需要过滤的token数组 
   - 4. o.Fit=true/false 设置是否根据敏感词的个数返回对应个数的token
   - 5. o.Screening(string) 调用此函数过滤字符串并返回替换后的结果
   
