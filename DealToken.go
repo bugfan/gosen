@@ -4,17 +4,20 @@ import (
 	. "fmt"
 	"regexp"
 )
-// 传入过滤之后的token
-func New(t string)Sen{
-	return Sen{Token:t}
+
+// 传入过滤之后替换为的token
+func New(token string) *Sen {
+	return &Sen{token: token, Fit: false}
 }
-type Sen struct{
-	Tokens 	[]string
-	Token 	string
-	Fit 	bool		//是否根据敏感词个数返回对应个数的过滤后的token 默认为返回单个过滤后的token
+
+type Sen struct {
+	Tokens []string
+	token  string
+	Fit    bool //是否根据敏感词个数返回对应个数的过滤后的token 默认为返回单个过滤后的token
 }
+
 // 屏蔽
-func (s * Sen) Screening (str string)(string,error){
+func (s *Sen) Filter(str string) (string, error) {
 	//Println("敏感词过滤: source{%s} tokens{%+v}", str, tokens)
 	//处理汉字
 	for j := 0; j < len(s.Tokens); j++ {
@@ -44,19 +47,20 @@ func (s * Sen) Screening (str string)(string,error){
 		}
 		reg2 = reg2 + ")"
 		reg := regexp.MustCompile(reg2)
-		str = reg.ReplaceAllString(str,s.get8(len(s.Tokens[j])))
+		str = reg.ReplaceAllString(str, s.get8(len(s.Tokens[j])))
 	}
 	//Println("敏感词过滤结果: %s", str)
 	return str, nil
 }
+
 // 根据i递归取i个token
-func (s * Sen) get8 (i int) string {
-	if !s.Fit{
-		return s.Token
+func (s *Sen) get8(i int) string {
+	if !s.Fit {
+		return s.token
 	}
-	s8 := s.Token
+	s8 := s.token
 	if i > 1 {
-		s8 = s.get8(i-1) + s.Token
+		s8 = s.get8(i-1) + s.token
 		return s8
 	}
 	return s8
